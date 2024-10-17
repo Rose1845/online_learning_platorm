@@ -1,4 +1,4 @@
-# Spring Boot Application
+# Online Learning PLatfrom
 
 This is a Spring Boot application that can be easily run using Docker. Follow the steps below to get the application up and running.
 
