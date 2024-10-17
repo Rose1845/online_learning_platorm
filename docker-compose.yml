@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_olp_container
+    env_file:
+      - .env.db
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+       - online_learning_platform-network
+
+volumes:
+  postgres_data:
+
+networks:
+  online_learning_platform-network:
+    driver: bridge
