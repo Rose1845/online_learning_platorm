@@ -39,59 +39,6 @@ public class UserController {
         return ResponseEntity.ok(userService.createApprover(userDto));
     }
 
-    @PostMapping(value="/add-role-to-user/{userId}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse<User>> addUserToRole(@Valid @RequestBody Set<Long> useRoles, @PathVariable  String userId) throws EMException {
-
-        try{
-            return ResponseEntity.ok(userService.addRolesToUser(userId,useRoles));
-
-        }catch (EMException e){
-            GenericResponse<User> errorResponse = GenericResponse.<User>builder()
-                    .data(null)
-                    .message(e.getMessage())
-                    .status(ResponseStatusEnum.ERROR)
-                    .debugMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
-        catch (Exception e) {
-            GenericResponse<User> errorResponse = GenericResponse.<User>builder()
-                    .data(null)
-                    .message("An unexpected error occurred")
-                    .status(ResponseStatusEnum.ERROR)
-                    .debugMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-
-        }
-    }
-
-    @PostMapping(value="/revoke-role-to-user/{userId}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse<User>> revokeRoleToUser(@Valid @RequestBody Set<Long> useRoles, @PathVariable  String userId) throws EMException {
-
-        try{
-            return ResponseEntity.ok(userService.removeRolesFromUser(userId,useRoles));
-
-        }catch (EMException e){
-            GenericResponse<User> errorResponse = GenericResponse.<User>builder()
-                    .data(null)
-                    .message(e.getMessage())
-                    .status(ResponseStatusEnum.ERROR)
-                    .debugMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
-        catch (Exception e) {
-            GenericResponse<User> errorResponse = GenericResponse.<User>builder()
-                    .data(null)
-                    .message("An unexpected error occurred")
-                    .status(ResponseStatusEnum.ERROR)
-                    .debugMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable String id) {

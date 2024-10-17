@@ -1,6 +1,5 @@
 package com.rose.online_learning_platform.course.request;
 
-import com.rose.online_learning_platform.commons.enums.CourseStatusEnum;
 import lombok.Data;
 
 @Data

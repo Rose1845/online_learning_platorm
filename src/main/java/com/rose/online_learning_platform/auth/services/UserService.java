@@ -100,56 +100,12 @@ public class UserService {
         return user;
     }
 
-    public GenericResponse<User> addRolesToUser(String userId, Set<Long> roleIds) throws EMException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> EMException.builder().message("User not found").build());
-
-        List<Role> rolesToAdd = new ArrayList<>();
-        for (Long roleId : roleIds) {
-            Role role = roleRepository.findById(roleId)
-                    .orElseThrow(() -> EMException.builder().message("Role not found").build());
-            if (!user.getRoles().contains(role)) {
-                rolesToAdd.add(role);
-            }
-        }
-
-        user.getRoles().addAll(rolesToAdd);
-
-        var savedUserRole = userRepository.save(user);
-        return GenericResponse.<User>builder()
-                .status(ResponseStatusEnum.SUCCESS)
-                .data(savedUserRole)
-                .debugMessage("role assigned")
-                .message("User added a Role successfully")
-                .build();
-    }
-
-    public GenericResponse<User> removeRolesFromUser(String userId, Set<Long> roleIds) throws EMException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> EMException.builder().message("No user record").build());
-
-        for (Long roleId : roleIds) {
-            Role roleToRemove = roleRepository.findById(roleId)
-                    .orElseThrow(() -> EMException.builder().message("Role not found").build());
-
-            if (user.getRoles().contains(roleToRemove)) {
-                user.getRoles().remove(roleToRemove);
-            }
-        }
-
-        var userRemovedRole=  userRepository.save(user);
-
-        return GenericResponse.<User>builder()
-                .status(ResponseStatusEnum.SUCCESS)
-                .data(userRemovedRole)
-                .debugMessage("role revoked from user")
-                .message("User removed Role successfully")
-                .build();
-    }
 
     public UserDTO update(String id, CreateUpdateUserDto userDTO) {
         var user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
-        user = convertToEntity(userDTO);
+        user.setFullName(userDTO.getFullName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getEmail()));
         user = userRepository.save(user);
         return convertToDto(user);
     }
